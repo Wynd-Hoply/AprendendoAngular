@@ -1,4 +1,8 @@
-<div class="produto">
-  <h2>{{ nome }}</h2>
-  <p>Preço: R$ {{ preco }}</p>
+<div class="product-card">
+  <h3>{{ nome | uppercase }}</h3>
+  <p>Preço: {{ preco | currency:'BRL' }}</p>
+
+  <button (click)="selecionarProduto()">
+    Selecionar {{ nome }}
+  </button>
 </div>
