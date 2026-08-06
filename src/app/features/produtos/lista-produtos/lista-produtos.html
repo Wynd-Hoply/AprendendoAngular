@@ -1,9 +1,16 @@
 @for (item of produtos(); track item) {
-  <app-produto 
-  [nome]="item.nome" 
-  [preco]="item.preco"
-  (produtoSelecionado)="exibirProduto($event)"
+  <app-produto
+    [nome]="item.nome"
+    [preco]="item.preco"
+    (produtoSelecionado)="exibirProduto($event)"
   ></app-produto>
 
+  <h2>Total de Produtos: {{ totalProdutos() }}</h2>
   <p><button (click)="adicionarProduto()">Adicionar Produto</button></p>
 }
+<br />
+<button (click)="adicionarProduto()">Adicionar Produto</button>
+  <button (click)="substituirProdutos()">Substituir Lista</button>
+
+<h2>Total de Produtos: {{ totalProdutos() }}</h2>
+<h3>Valor Total: R$ {{ valorTotal() }}</h3>

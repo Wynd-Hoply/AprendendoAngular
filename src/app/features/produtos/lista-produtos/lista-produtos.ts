@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { Produto } from '../produto/produto';
 
 @Component({
@@ -34,7 +34,15 @@ export class ListaProdutos {
     console.log('Produto selecionado:', nome);
   }
 
+  totalProdutos = computed(() => this.produtos().length);
+  valorTotal = computed(() => {
+    return this.produtos().reduce((total, item) => total + item.preco, 0);
+  });
+
   adicionarProduto() {
     this.produtos.update((listaAtual) => [...listaAtual, { nome: 'Teclado', preco: 250 }]);
+  }
+  substituirProdutos() {
+    this.produtos.set([{ nome: 'Produto novo', preco: 999 }]);
   }
 }
