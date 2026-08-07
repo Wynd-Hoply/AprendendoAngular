@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { Produto } from '../produto/produto';
 
 @Component({
@@ -32,17 +32,46 @@ export class ListaProdutos {
   ]);
   exibirProduto(nome: string) {
     console.log('Produto selecionado:', nome);
+    this.produtoSelecionado.set(nome);
   }
 
+
+
+  quantidadeCarrinho = computed(() => this.carrinho().length);
+  produtoSelecionado = signal<string | null>(null);
   totalProdutos = computed(() => this.produtos().length);
   valorTotal = computed(() => {
     return this.produtos().reduce((total, item) => total + item.preco, 0);
   });
+
+  carrinho = signal<{ nome: string; preco: number }[]>([]);
+
+  totalCarrinho = computed(() => {
+    return this.carrinho().reduce((total, item) => total + item.preco, 0);
+  });
+
+  adicionarCarrinho(produto: { nome: string; preco: number }) {
+    this.carrinho.update(listaAtual => [...listaAtual, produto]);
+  }
 
   adicionarProduto() {
     this.produtos.update((listaAtual) => [...listaAtual, { nome: 'Teclado', preco: 250 }]);
   }
   substituirProdutos() {
     this.produtos.set([{ nome: 'Produto novo', preco: 999 }]);
+  }
+
+  constructor() {
+    effect(() => {
+      console.log('Lista de produtos alterada:', this.produtos());
+    });
+    effect(() => {
+      console.log('Valor total atualizado:', this.valorTotal());
+    });
+    effect(() => {
+      if (typeof document !== 'undefined') {
+        document.title = `(${this.totalProdutos()}) Minha Loja`;
+      }
+    });
   }
 }
