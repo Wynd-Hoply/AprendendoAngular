@@ -1,3 +1,23 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/auth.guard';
 
-export const routes: Routes = [];
+
+export const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () => import('./features/home/home/home').then((m) => m.Home),
+  },
+  {
+    path: 'carrinho',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/carrinho/carrinho/carrinho').then((m) => m.Carrinho),
+  },
+  {
+    path: 'produtos',
+    loadComponent: () => import('./features/produtos/lista-produtos/lista-produtos').then((m) => m.ListaProdutos)
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
+];
