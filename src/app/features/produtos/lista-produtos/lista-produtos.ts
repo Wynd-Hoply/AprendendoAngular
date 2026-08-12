@@ -1,6 +1,6 @@
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal, computed, effect, inject } from '@angular/core';
+import { ProdutosService } from '../produtos.service';
 import { Produto } from '../produto/produto';
-import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -9,6 +9,8 @@ import {HttpClient} from '@angular/common/http';
   styleUrl: './lista-produtos.css',
 })
 export class ListaProdutos {
+  private produtosService = inject(ProdutosService);
+
   // ========== SIGNALS ==============
   // Agora vem tudo da API (iniciando vazio)
 
@@ -57,7 +59,7 @@ export class ListaProdutos {
 
 
   // CONSTRUCTOR
-  constructor(private http: HttpClient) {
+  constructor() {
     // carrega a API
     this.carregarProdutos();
 
@@ -78,19 +80,11 @@ export class ListaProdutos {
     // Inicia o load
     this.carregando.set(true);
 
-    this.http.get<
-    { title: string; price: number}[]>
-    ('https://fakestoreapi.com/products')
+    this.produtosService.buscarProdutos()
     .subscribe({
       next: (dados) => {
-
-        // Adaptação da API para o nosso projeto
-        const produtosFormatados = dados.map((p => ({
-          nome: p.title,
-          preco: p.price
-        })));
-
-        this.produtos.set(produtosFormatados);
+        const produtos = this.produtosService.transformarProdutos(dados);
+        this.produtos.set(produtos);
         this.carregando.set(false); // Finaliza o load
       },
 

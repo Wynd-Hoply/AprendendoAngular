@@ -1,17 +1,51 @@
-<h2>Produtos:</h2>
+<!-- Seção de Produtos -->
+<section>
+  <h2>Produtos:</h2>
 
-@if (carregando()) {
-  <p> Carregando produtos...</p>
-}
-
-@if (!carregando()) {
-  @for (item of produtos(); track item.nome) {
-    <app-produto
-    [nome]="item.nome"
-    [preco]="item.preco"
-    (produtoSelecionado)="exibirProduto($event)"
-    ></app-produto>
-
-    <button (click)="adicionarCarrinho(item)">Adicionar ao Carrinho</button>
+  @if (carregando()) {
+    <p>Carregando produtos...</p>
   }
-}
+
+  @if (!carregando()) {
+    @for (item of produtos(); track item.nome) {
+      <app-produto
+        [nome]="item.nome"
+        [preco]="item.preco"
+        (produtoSelecionado)="exibirProduto($event)"
+      ></app-produto>
+
+      <button (click)="adicionarCarrinho(item)">Adicionar ao Carrinho</button>
+    }
+  }
+
+  <h2>
+    Produto Selecionado:
+    @if (produtoSelecionado()) {
+      <strong style="color: green">{{ produtoSelecionado() }}</strong>
+    } @else {
+      <span style="color: gray">Nenhum</span>
+    }
+  </h2>
+
+  <p><button (click)="adicionarProduto()">Adicionar Produto</button></p>
+
+  <p><button (click)="substituirProdutos()">Substituir Lista</button></p>
+
+  <h2>Total de Produtos: {{ totalProdutos() }}</h2>
+
+  <h3>Valor total: {{ valorTotal() }}</h3>
+</section>
+
+<!-- Seção de carrinho -->
+<section>
+  <hr />
+
+  <h2>Carrinho:</h2>
+
+  @for (item of carrinho(); track $index) {
+    <p>{{ item.nome }} - R$ {{ item.preco.toFixed(2) }}</p>
+  }
+
+  <p><strong>Itens no carrinho:</strong> {{ quantidadeCarrinho() }}</p>
+  <p><strong>Total do Carrinho:</strong> R$ {{ totalCarrinho().toFixed(2) }}</p>
+</section>
