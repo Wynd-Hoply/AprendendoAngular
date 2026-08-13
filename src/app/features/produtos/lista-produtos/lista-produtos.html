@@ -1,22 +1,38 @@
 <!-- Seção de Produtos -->
+ <mat-card class="lista-produtos">
 <section>
   <h2>Produtos:</h2>
 
-  @if (carregando()) {
+  <!-- Estado 1: Loading -->
+   @if (carregando()) {
     <p>Carregando produtos...</p>
-  }
+   }
 
-  @if (!carregando()) {
-    @for (item of produtos(); track item.nome) {
-      <app-produto
-        [nome]="item.nome"
-        [preco]="item.preco"
-        (produtoSelecionado)="exibirProduto($event)"
-      ></app-produto>
+   <!-- Estado 2: Erro -->
+   @if (erro()) {
+    <p style="color: red">{{ erro() }}</p>
 
-      <button (click)="adicionarCarrinho(item)">Adicionar ao Carrinho</button>
+    <button mat-raised-button color="warn" (click)="carregarProdutos()">Tentar Novamente</button>
+   }
+
+   <!-- Estado 3: Sucesso -->
+   @if (!carregando() && !erro()) {
+   <p>Total de produtos: {{ totalProdutos() }}</p> 
+
+    <hr />
+
+    @for (item of produtos(); track $index) {
+      <app-produto 
+      [nome]="item.nome" 
+      [preco]="item.preco"
+      (produtoSelecionado)="exibirProduto($event)"
+      (produtoAdicionado)="adicionarAoCarrinho($event)"
+       />
     }
-  }
+   }
+
+
+
 
   <h2>
     Produto Selecionado:
@@ -27,14 +43,16 @@
     }
   </h2>
 
-  <p><button (click)="adicionarProduto()">Adicionar Produto</button></p>
+  <p><button mat-raised-button color="primary" (click)="adicionarProduto()">Adicionar Produto</button></p>
 
-  <p><button (click)="substituirProdutos()">Substituir Lista</button></p>
+  <p><button mat-raised-button color="accent" (click)="substituirProdutos()">Substituir Lista</button></p>
 
   <h2>Total de Produtos: {{ totalProdutos() }}</h2>
 
   <h3>Valor total: {{ valorTotal() }}</h3>
 </section>
+</mat-card>
+
 
 <!-- Seção de carrinho -->
 <section>

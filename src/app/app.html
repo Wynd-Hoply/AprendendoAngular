@@ -1,15 +1,16 @@
-<h1>Minha Loja</h1>
-<nav>
-    <a routerLink="/">Home</a> |
-    <a routerLink="/produtos">Produtos</a> |
-    <a routerLink="/carrinho">Carrinho</a> 
-        
-</nav>
+<app-header></app-header>
+<!-- Puxar Header para o APP -->
 
-<hr />
+<main style="padding: 20px">
+  <!-- Controle temp de login -->
+  <section style="margin-bottom: 20px">
+    <button (click)="login()">Login</button>
+    <button (click)="logout()">Logout</button>
 
-<button (click)="login()">Login</button>
-<button (click)="logout()">Logout</button>
+    <p>Status: {{ usuarioLogado() ? 'Logado' : 'Deslogado' }}</p>
+  </section>
 
-
-<router-outlet></router-outlet>
+  <hr />
+  <!-- CONTEÚDO DINAMICO DAS ROTINHAS POXA -->
+  <router-outlet></router-outlet>
+</main>

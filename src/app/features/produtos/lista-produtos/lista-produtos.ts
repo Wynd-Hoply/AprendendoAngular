@@ -1,10 +1,12 @@
 import { Component, signal, computed, effect, inject } from '@angular/core';
 import { ProdutosService } from '../produtos.service';
 import { Produto } from '../produto/produto';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-lista-produtos',
-  imports: [Produto],
+  imports: [Produto, MatButtonModule, MatCardModule],
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
@@ -14,6 +16,7 @@ export class ListaProdutos {
   // ========== SIGNALS ==============
   // Agora vem tudo da API (iniciando vazio)
 
+  erro = signal<string | null>(null);
   // Controle de carregamento
   carregando = signal(true);
 
@@ -44,7 +47,7 @@ export class ListaProdutos {
     return this.carrinho().reduce((total, item) => total + item.preco, 0);
   });
 
-  adicionarCarrinho(produto: { nome: string; preco: number }) {
+  adicionarAoCarrinho(produto: { nome: string; preco: number }) {
     this.carrinho.update(listaAtual => [...listaAtual, produto]);
   }
 
@@ -78,7 +81,8 @@ export class ListaProdutos {
 
   carregarProdutos() {
     // Inicia o load
-    this.carregando.set(true);
+    this.erro.set(null); // Limpa o erro anterior
+    this.carregando.set(true); // Ativa o load
 
     this.produtosService.buscarProdutos()
     .subscribe({
@@ -90,6 +94,7 @@ export class ListaProdutos {
 
       error: (erro) => {
         console.error('Erro ao carregar produtos:', erro);
+        this.erro.set('Erro ao carregar produtos. Verifique sua conexão e tente novamente.')
         this.carregando.set(false); // Evita load inf
       }
     })
