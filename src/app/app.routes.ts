@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
 
-
 export const routes: Routes = [
   {
     path: '',
@@ -14,7 +13,12 @@ export const routes: Routes = [
   },
   {
     path: 'produtos',
-    loadComponent: () => import('./features/produtos/lista-produtos/lista-produtos').then((m) => m.ListaProdutos)
+    loadComponent: () =>
+      import('./features/produtos/lista-produtos/lista-produtos').then((m) => m.ListaProdutos),
+  },
+  {
+    path: 'checkout',
+    loadComponent: () => import('./features/checkout/checkout/checkout').then((m) => m.Checkout),
   },
   {
     path: '**',
