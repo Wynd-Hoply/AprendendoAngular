@@ -1,16 +1,5 @@
 <app-header></app-header>
-<!-- Puxar Header para o APP -->
 
 <main class="container-principal">
-  <!-- Controle temp de login -->
-  <section class="bloco-controle" style="margin-bottom: 20px">
-    <button (click)="login()">Login</button>
-    <button (click)="logout()">Logout</button>
-
-    <p>Status: {{ usuarioLogado() ? 'Logado' : 'Deslogado' }}</p>
-  </section>
-
-  <hr />
-  <!-- CONTEÚDO DINAMICO DAS ROTINHAS POXA -->
   <router-outlet></router-outlet>
 </main>
