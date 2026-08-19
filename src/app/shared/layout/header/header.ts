@@ -4,6 +4,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { CarrinhoService } from '../../../core/services/carrinho.service';
 import { AuthService } from '../../../core/services/auth.services';
+
+import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
+import { AuthFacade } from '../../../core/facades/auth.facade';
+
 @Component({
   selector: 'app-header',
   imports: [MatToolbarModule, MatButtonModule, RouterLink],
@@ -11,15 +15,15 @@ import { AuthService } from '../../../core/services/auth.services';
   styleUrl: './header.css',
 })
 export class Header {
-  private carrinhoService = inject(CarrinhoService);
-  private authService = inject(AuthService);
+  private carrinhoFacade = inject(CarrinhoFacade);
+  private authFacade = inject(AuthFacade);
   private router = inject(Router);
-  quantidade = this.carrinhoService.quantidade;
-  estaLogado = this.authService.estaLogado;
-  ehAdmin = this.authService.ehAdmin;
-  usuarioAtual = this.authService.usuarioAtual;
+  quantidade = this.carrinhoFacade.quantidade;
+  estaLogado = this.authFacade.estaLogado;
+  ehAdmin = this.authFacade.ehAdmin;
+  usuarioAtual = this.authFacade.usuarioAtual;
   sair() {
-    this.authService.logout();
+    this.authFacade.sair();
     this.router.navigateByUrl('/login');
   }
 }

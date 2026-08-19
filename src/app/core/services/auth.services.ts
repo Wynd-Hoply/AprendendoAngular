@@ -43,4 +43,7 @@ export class AuthService {
   obterToken(): string | null {
     return this.tokenJwt();
   }
+  obterPerfil(): PerfilUsuario | null {
+    return this.usuario()?.perfil || null;
+  }
 }

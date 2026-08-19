@@ -1,37 +1,32 @@
-<section class="login-page">
-  <div class="login-card">
-    <p class="eyebrow">Acesso</p>
-    <h1>Entrar na loja</h1>
-    <p class="subtitulo">Use seu e-mail e senha para continuar.</p>
-
-    <form [formGroup]="formulario" (ngSubmit)="entrar()" class="login-form">
-      <mat-form-field appearance="outline">
-        <mat-label>E-mail</mat-label>
-        <input matInput type="email" formControlName="email" autocomplete="email" />
-        @if (formulario.controls.email.touched && formulario.controls.email.hasError('required')) {
-          <mat-error>Informe seu e-mail.</mat-error>
-        }
-        @if (formulario.controls.email.touched && formulario.controls.email.hasError('email')) {
-          <mat-error>Informe um e-mail válido.</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Senha</mat-label>
-        <input matInput type="password" formControlName="senha" autocomplete="current-password" />
-        @if (formulario.controls.senha.touched && formulario.controls.senha.hasError('required')) {
-          <mat-error>Informe sua senha.</mat-error>
-        }
-        @if (formulario.controls.senha.touched && formulario.controls.senha.hasError('minlength')) {
-          <mat-error>A senha precisa ter pelo menos 3 caracteres.</mat-error>
-        }
-      </mat-form-field>
-
-      @if (erroLogin()) {
-        <p class="erro-login">E-mail ou senha inválidos.</p>
-      }
-
-      <button mat-raised-button color="primary" type="submit">Entrar</button>
-    </form>
-  </div>
+<h2>Login</h2>
+<p>Informe seus dados para simular a autenticação na loja.</p>
+<section class="dica-login">
+  <h3>Usuários para teste</h3>
+  <p><strong>Administrador:</strong> admin@email.com</p>
+  <p><strong>Usuário comum:</strong> qualquer outro e-mail válido.</p>
+  <p>A senha precisa ter pelo menos 3 caracteres.</p>
 </section>
+@if (erroLogin()) {
+  <p style="color: red">Não foi possível realizar o login.</p>
+}
+<form [formGroup]="formulario">
+  <p><input type="email" formControlName="email" placeholder="E-mail" /></p>
+  @if (formulario.get('email')?.touched && formulario.get('email')?.invalid) {
+    @if (formulario.get('email')?.errors?.['required']) {
+      <small>E-mail é obrigatório</small>
+    }
+    @if (formulario.get('email')?.errors?.['email']) {
+      <small>E-mail inválido</small>
+    }
+  }
+  <p><input type="password" formControlName="senha" placeholder="Senha" /></p>
+  @if (formulario.get('senha')?.touched && formulario.get('senha')?.invalid) {
+    @if (formulario.get('senha')?.errors?.['required']) {
+      <small>Senha é obrigatória</small>
+    }
+    @if (formulario.get('senha')?.errors?.['minlength']) {
+      <small>Senha deve ter no mínimo 3 caracteres</small>
+    }
+  }
+  <p><button type="button" (click)="entrar()" [disabled]="formulario.invalid">Entrar</button></p>
+</form>

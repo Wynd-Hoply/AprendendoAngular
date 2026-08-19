@@ -3,13 +3,13 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap, catchError, throwError } from 'rxjs';
 
-import { AuthService } from '../services/auth.services';
+import { AuthFacade } from '../facades/auth.facade';
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
+  const authFacade = inject(AuthFacade);
 
   const router = inject(Router);
-  const token = authService.obterToken();
+  const token = authFacade.obterToken();
   // LOG REQUEST
   console.log('REQUEST', req.url);
   // TOKEN
@@ -32,7 +32,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
       // 401 -> ausência de autenticação ou token inválido.
       if (error.status === 401) {
         console.warn('Não autorizado!');
-        authService.logout();
+        authFacade.sair();
         router.navigateByUrl('/login');
       }
 

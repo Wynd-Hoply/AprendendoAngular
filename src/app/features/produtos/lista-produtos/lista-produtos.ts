@@ -3,7 +3,7 @@ import { ProdutosService } from '../../../core/services/produtos.service';
 import { Produto } from '../produto/produto';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CarrinhoService } from '../../../core/services/carrinho.service';
+import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -13,6 +13,11 @@ import { CarrinhoService } from '../../../core/services/carrinho.service';
 })
 export class ListaProdutos {
   private produtosService = inject(ProdutosService);
+
+  carrinhoFacade = inject(CarrinhoFacade);
+
+  quantidadeCarrinho = this.carrinhoFacade.quantidade;
+  totalCarrinho = this.carrinhoFacade.total;
 
   // ========== SIGNALS ==============
   // Agora vem tudo da API (iniciando vazio)
@@ -32,10 +37,6 @@ export class ListaProdutos {
 
   // ==================== CARRINHO ==========================
 
-  carrinhoService = inject(CarrinhoService);
-  quantidadeCarrinho = this.carrinhoService.quantidade;
-  totalCarrinho = this.carrinhoService.total;
-
   // Computed
   totalProdutos = computed(() => this.produtos().length);
   valorTotal = computed(() => {
@@ -43,7 +44,7 @@ export class ListaProdutos {
   });
 
   adicionarAoCarrinho(produto: { nome: string; preco: number }) {
-    this.carrinhoService.adicionar(produto);
+    this.carrinhoFacade.adicionarProduto(produto);
   }
 
   adicionarProduto() {
