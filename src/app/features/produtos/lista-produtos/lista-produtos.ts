@@ -3,6 +3,7 @@ import { ProdutosService } from '../../../core/services/produtos.service';
 import { Produto } from '../produto/produto';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { ItemCarrinho } from '../../../core/models/item-carrinho';
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 
 @Component({
@@ -43,15 +44,15 @@ export class ListaProdutos {
     return this.produtos().reduce((total, item) => total + item.preco, 0);
   });
 
-  adicionarAoCarrinho(produto: { nome: string; preco: number }) {
-    this.carrinhoFacade.adicionarProduto(produto);
-  }
-
   adicionarProduto() {
     this.produtos.update((listaAtual) => [...listaAtual, { nome: 'Teclado', preco: 250 }]);
   }
   substituirProdutos() {
     this.produtos.set([{ nome: 'Produto novo', preco: 999 }]);
+  }
+
+  adicionarAoCarrinho(produto: ItemCarrinho) {
+    this.carrinhoFacade.adicionarProduto(produto);
   }
 
   // CONSTRUCTOR
